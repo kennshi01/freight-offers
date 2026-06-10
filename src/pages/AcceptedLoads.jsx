@@ -1,3 +1,6 @@
+import { CalendarDays, DollarSign, Truck } from "lucide-react";
+import { OFFER_STATUS } from "../constants/offerStatus";
+
 function formatMoney(value) {
   return new Intl.NumberFormat("en-US", {
     style: "currency",
@@ -7,7 +10,7 @@ function formatMoney(value) {
 }
 
 function AcceptedLoads({ offers }) {
-  const acceptedOffers = offers.filter((offer) => offer.status === "Accepted");
+  const acceptedOffers = offers.filter((offer) => offer.status === OFFER_STATUS.ACCEPTED);
   const totalRevenue = acceptedOffers.reduce((total, offer) => total + offer.rate, 0);
 
   return (
@@ -39,9 +42,9 @@ function AcceptedLoads({ offers }) {
                 <tr key={offer.id}>
                   <td><strong>{offer.brokerName}</strong></td>
                   <td>{offer.pickupCity} <span className="route-arrow">to</span> {offer.deliveryCity}</td>
-                  <td>{offer.pickupDate} <span className="route-arrow">to</span> {offer.deliveryDate}</td>
-                  <td><strong>{formatMoney(offer.rate)}</strong></td>
-                  <td>{offer.equipmentType}</td>
+                  <td><span className="inline-detail"><CalendarDays size={14} />{offer.pickupDate} <span className="route-arrow">to</span> {offer.deliveryDate}</span></td>
+                  <td><span className="inline-detail"><DollarSign size={14} /><strong>{formatMoney(offer.rate)}</strong></span></td>
+                  <td><span className="inline-detail"><Truck size={14} />{offer.equipmentType}</span></td>
                 </tr>
               ))}
               {acceptedOffers.length === 0 && (

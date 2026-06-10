@@ -1,10 +1,11 @@
 import { NavLink } from "react-router-dom";
+import { Building2, Inbox, LayoutDashboard, LogOut, Truck } from "lucide-react";
 
 const links = [
-  { to: "/dashboard", label: "Dashboard", icon: "DB" },
-  { to: "/freight-offers", label: "Freight Offers", icon: "FO" },
-  { to: "/brokers", label: "Brokers", icon: "BR" },
-  { to: "/accepted-loads", label: "Accepted Loads", icon: "AL" },
+  { to: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
+  { to: "/freight-offers", label: "Freight Offers", icon: Inbox },
+  { to: "/brokers", label: "Brokers", icon: Building2 },
+  { to: "/accepted-loads", label: "Accepted Loads", icon: Truck },
 ];
 
 function Navbar() {
@@ -19,16 +20,19 @@ function Navbar() {
       </div>
 
       <nav className="nav-links">
-        {links.map((link) => (
-          <NavLink
-            key={link.to}
-            to={link.to}
-            className={({ isActive }) => (isActive ? "nav-link active" : "nav-link")}
-          >
-            <span className="nav-icon">{link.icon}</span>
-            {link.label}
-          </NavLink>
-        ))}
+        {links.map((link) => {
+          const Icon = link.icon;
+          return (
+            <NavLink
+              key={link.to}
+              to={link.to}
+              className={({ isActive }) => (isActive ? "nav-link active" : "nav-link")}
+            >
+              <Icon size={18} />
+              {link.label}
+            </NavLink>
+          );
+        })}
       </nav>
 
       <div className="sidebar-footer">
@@ -37,6 +41,9 @@ function Navbar() {
           <strong>Dispatcher</strong>
           <span>Operations team</span>
         </div>
+        <NavLink to="/login" className="logout-link" title="Log out">
+          <LogOut size={17} />
+        </NavLink>
       </div>
     </aside>
   );

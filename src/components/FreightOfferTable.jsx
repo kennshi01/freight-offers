@@ -1,3 +1,7 @@
+import { AlertCircle, CheckCircle, Eye, Pencil, Trash2, XCircle } from "lucide-react";
+import { OFFER_STATUS } from "../constants/offerStatus";
+import { PRIORITIES } from "../constants/priorities";
+
 function formatMoney(value) {
   return new Intl.NumberFormat("en-US", {
     style: "currency",
@@ -6,7 +10,7 @@ function formatMoney(value) {
   }).format(value);
 }
 
-function FreightOfferTable({ offers, onUpdateStatus, onDeleteOffer, compact = false }) {
+function FreightOfferTable({ offers, onEditOffer, onUpdateStatus, onDeleteOffer, compact = false }) {
   return (
     <div className="table-wrapper">
       <table>
@@ -24,7 +28,10 @@ function FreightOfferTable({ offers, onUpdateStatus, onDeleteOffer, compact = fa
         <tbody>
           {offers.map((offer) => (
             <tr key={offer.id}>
-              <td><strong>{offer.brokerName}</strong></td>
+              <td>
+                <strong>{offer.brokerName}</strong>
+                {offer.priority === PRIORITIES[1] && <span className="priority"><AlertCircle size={12} /> High</span>}
+              </td>
               <td>
                 <span className="route">{offer.pickupCity}</span>
                 <span className="route-arrow">to</span>
@@ -40,10 +47,11 @@ function FreightOfferTable({ offers, onUpdateStatus, onDeleteOffer, compact = fa
               {!compact && (
                 <td>
                   <div className="action-buttons">
-                    <button className="button small neutral" onClick={() => onUpdateStatus(offer.id, "Reviewed")}>Reviewed</button>
-                    <button className="button small success" onClick={() => onUpdateStatus(offer.id, "Accepted")}>Accept</button>
-                    <button className="button small danger" onClick={() => onUpdateStatus(offer.id, "Rejected")}>Reject</button>
-                    <button className="button small outline" onClick={() => onDeleteOffer(offer.id)}>Delete</button>
+                    <button className="icon-button edit" title="Edit offer" onClick={() => onEditOffer(offer)}><Pencil size={15} /></button>
+                    <button className="icon-button neutral" title="Mark reviewed" onClick={() => onUpdateStatus(offer.id, OFFER_STATUS.REVIEWED)}><Eye size={15} /></button>
+                    <button className="icon-button success" title="Accept offer" onClick={() => onUpdateStatus(offer.id, OFFER_STATUS.ACCEPTED)}><CheckCircle size={15} /></button>
+                    <button className="icon-button danger" title="Reject offer" onClick={() => onUpdateStatus(offer.id, OFFER_STATUS.REJECTED)}><XCircle size={15} /></button>
+                    <button className="icon-button outline" title="Delete offer" onClick={() => onDeleteOffer(offer.id)}><Trash2 size={15} /></button>
                   </div>
                 </td>
               )}

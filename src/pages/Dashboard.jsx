@@ -1,5 +1,7 @@
 import FreightOfferTable from "../components/FreightOfferTable";
 import StatCard from "../components/StatCard";
+import { CheckCircle, DollarSign, Inbox, Package, XCircle } from "lucide-react";
+import { OFFER_STATUS } from "../constants/offerStatus";
 
 function formatMoney(value) {
   return new Intl.NumberFormat("en-US", {
@@ -10,9 +12,9 @@ function formatMoney(value) {
 }
 
 function Dashboard({ offers }) {
-  const newOffers = offers.filter((offer) => offer.status === "New").length;
-  const acceptedOffers = offers.filter((offer) => offer.status === "Accepted");
-  const rejectedOffers = offers.filter((offer) => offer.status === "Rejected").length;
+  const newOffers = offers.filter((offer) => offer.status === OFFER_STATUS.NEW).length;
+  const acceptedOffers = offers.filter((offer) => offer.status === OFFER_STATUS.ACCEPTED);
+  const rejectedOffers = offers.filter((offer) => offer.status === OFFER_STATUS.REJECTED).length;
   const acceptedRevenue = acceptedOffers.reduce((total, offer) => total + offer.rate, 0);
 
   return (
@@ -27,11 +29,11 @@ function Dashboard({ offers }) {
       </header>
 
       <section className="stat-grid">
-        <StatCard label="Total offers" value={offers.length} />
-        <StatCard label="New offers" value={newOffers} tone="cyan" />
-        <StatCard label="Accepted offers" value={acceptedOffers.length} tone="green" />
-        <StatCard label="Rejected offers" value={rejectedOffers} tone="red" />
-        <StatCard label="Accepted revenue" value={formatMoney(acceptedRevenue)} tone="purple" />
+        <StatCard label="Total offers" value={offers.length} icon={Package} />
+        <StatCard label="New offers" value={newOffers} icon={Inbox} tone="cyan" />
+        <StatCard label="Accepted offers" value={acceptedOffers.length} icon={CheckCircle} tone="green" />
+        <StatCard label="Rejected offers" value={rejectedOffers} icon={XCircle} tone="red" />
+        <StatCard label="Accepted revenue" value={formatMoney(acceptedRevenue)} icon={DollarSign} tone="purple" />
       </section>
 
       <section className="panel">

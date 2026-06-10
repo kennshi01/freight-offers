@@ -1,4 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { Plus, Save, X } from "lucide-react";
+import { EQUIPMENT_TYPES } from "../constants/equipmentTypes";
+import { PRIORITIES } from "../constants/priorities";
 
 const emptyOffer = {
   brokerName: "",
@@ -9,11 +12,16 @@ const emptyOffer = {
   rate: "",
   miles: "",
   weight: "",
-  equipmentType: "Dry Van",
+  equipmentType: EQUIPMENT_TYPES[0],
+  priority: PRIORITIES[0],
 };
 
-function FreightOfferForm({ brokers, onAddOffer }) {
+function FreightOfferForm({ brokers, editingOffer, onAddOffer, onUpdateOffer, onCancelEdit }) {
   const [formData, setFormData] = useState(emptyOffer);
+
+  useEffect(() => {
+    setFormData(editingOffer ? { ...emptyOffer, ...editingOffer } : emptyOffer);
+  }, [editingOffer]);
 
   function handleChange(event) {
     const { name, value } = event.target;
@@ -22,12 +30,18 @@ function FreightOfferForm({ brokers, onAddOffer }) {
 
   function handleSubmit(event) {
     event.preventDefault();
-    onAddOffer({
+    const offerData = {
       ...formData,
       rate: Number(formData.rate),
       miles: Number(formData.miles),
       weight: Number(formData.weight),
-    });
+    };
+
+    if (editingOffer) {
+      onUpdateOffer(offerData);
+    } else {
+      onAddOffer(offerData);
+    }
     setFormData(emptyOffer);
   }
 
@@ -35,8 +49,8 @@ function FreightOfferForm({ brokers, onAddOffer }) {
     <form className="panel form-panel" onSubmit={handleSubmit}>
       <div className="panel-heading">
         <div>
-          <p className="eyebrow">New opportunity</p>
-          <h2>Add freight offer</h2>
+          <p className="eyebrow">{editingOffer ? "Update opportunity" : "New opportunity"}</p>
+          <h2>{editingOffer ? "Edit freight offer" : "Add freight offer"}</h2>
         </div>
       </div>
 
@@ -88,14 +102,27 @@ function FreightOfferForm({ brokers, onAddOffer }) {
         <label>
           Equipment type
           <select name="equipmentType" value={formData.equipmentType} onChange={handleChange}>
-            <option>Dry Van</option>
-            <option>Reefer</option>
-            <option>Flatbed</option>
-            <option>Step Deck</option>
+            {EQUIPMENT_TYPES.map((type) => <option key={type}>{type}</option>)}
+          </select>
+        </label>
+        <label>
+          Priority
+          <select name="priority" value={formData.priority} onChange={handleChange}>
+            {PRIORITIES.map((priority) => <option key={priority}>{priority}</option>)}
           </select>
         </label>
       </div>
-      <button className="button primary" type="submit">Save offer</button>
+      <div className="form-actions">
+        <button className="button primary" type="submit">
+          {editingOffer ? <Save size={16} /> : <Plus size={16} />}
+          {editingOffer ? "Update offer" : "Save offer"}
+        </button>
+        {editingOffer && (
+          <button className="button outline" type="button" onClick={onCancelEdit}>
+            <X size={16} /> Cancel
+          </button>
+        )}
+      </div>
     </form>
   );
 }

@@ -1,8 +1,12 @@
 import { useState } from "react";
+import { Filter, Search } from "lucide-react";
 import FreightOfferForm from "../components/FreightOfferForm";
 import FreightOfferTable from "../components/FreightOfferTable";
+import { EQUIPMENT_TYPES } from "../constants/equipmentTypes";
+import { OFFER_STATUSES } from "../constants/offerStatus";
 
-function FreightOffers({ offers, brokers, onAddOffer, onUpdateStatus, onDeleteOffer }) {
+function FreightOffers({ offers, brokers, onAddOffer, onUpdateOffer, onUpdateStatus, onDeleteOffer }) {
+  const [editingOffer, setEditingOffer] = useState(null);
   const [filters, setFilters] = useState({
     pickupCity: "",
     deliveryCity: "",
@@ -24,6 +28,18 @@ function FreightOffers({ offers, brokers, onAddOffer, onUpdateStatus, onDeleteOf
     );
   });
 
+  function handleUpdateOffer(offer) {
+    onUpdateOffer(offer);
+    setEditingOffer(null);
+  }
+
+  function handleDeleteOffer(id) {
+    onDeleteOffer(id);
+    if (editingOffer?.id === id) {
+      setEditingOffer(null);
+    }
+  }
+
   return (
     <div>
       <header className="page-header">
@@ -35,7 +51,13 @@ function FreightOffers({ offers, brokers, onAddOffer, onUpdateStatus, onDeleteOf
         <span className="date-chip">{offers.length} total offers</span>
       </header>
 
-      <FreightOfferForm brokers={brokers} onAddOffer={onAddOffer} />
+      <FreightOfferForm
+        brokers={brokers}
+        editingOffer={editingOffer}
+        onAddOffer={onAddOffer}
+        onUpdateOffer={handleUpdateOffer}
+        onCancelEdit={() => setEditingOffer(null)}
+      />
 
       <section className="panel">
         <div className="panel-heading">
@@ -45,25 +67,25 @@ function FreightOffers({ offers, brokers, onAddOffer, onUpdateStatus, onDeleteOf
           </div>
           <span className="record-count">{filteredOffers.length} results</span>
         </div>
+        <div className="filters-heading"><Filter size={15} /> Filter offers</div>
         <div className="filters">
-          <input name="pickupCity" value={filters.pickupCity} onChange={handleFilterChange} placeholder="Search pickup city" />
-          <input name="deliveryCity" value={filters.deliveryCity} onChange={handleFilterChange} placeholder="Search delivery city" />
+          <div className="input-with-icon"><Search size={15} /><input name="pickupCity" value={filters.pickupCity} onChange={handleFilterChange} placeholder="Search pickup city" /></div>
+          <div className="input-with-icon"><Search size={15} /><input name="deliveryCity" value={filters.deliveryCity} onChange={handleFilterChange} placeholder="Search delivery city" /></div>
           <select name="status" value={filters.status} onChange={handleFilterChange}>
             <option value="">All statuses</option>
-            <option>New</option>
-            <option>Reviewed</option>
-            <option>Accepted</option>
-            <option>Rejected</option>
+            {OFFER_STATUSES.map((status) => <option key={status}>{status}</option>)}
           </select>
           <select name="equipmentType" value={filters.equipmentType} onChange={handleFilterChange}>
             <option value="">All equipment</option>
-            <option>Dry Van</option>
-            <option>Reefer</option>
-            <option>Flatbed</option>
-            <option>Step Deck</option>
+            {EQUIPMENT_TYPES.map((type) => <option key={type}>{type}</option>)}
           </select>
         </div>
-        <FreightOfferTable offers={filteredOffers} onUpdateStatus={onUpdateStatus} onDeleteOffer={onDeleteOffer} />
+        <FreightOfferTable
+          offers={filteredOffers}
+          onEditOffer={setEditingOffer}
+          onUpdateStatus={onUpdateStatus}
+          onDeleteOffer={handleDeleteOffer}
+        />
       </section>
     </div>
   );
