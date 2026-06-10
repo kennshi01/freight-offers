@@ -30,7 +30,7 @@ function FreightOfferTable({ offers, onEditOffer, onUpdateStatus, onDeleteOffer,
             <tr key={offer.id}>
               <td>
                 <strong>{offer.brokerName}</strong>
-                {offer.priority === PRIORITIES[1] && <span className="priority"><AlertCircle size={12} /> High</span>}
+                {offer.priority === PRIORITIES[2] && <span className="priority"><AlertCircle size={12} /> High</span>}
               </td>
               <td>
                 <span className="route">{offer.pickupCity}</span>

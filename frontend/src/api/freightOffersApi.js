@@ -1,8 +1,13 @@
 import { get, post, put, remove } from "./apiClient";
 import { API_ROUTES } from "../constants/apiRoutes";
 
-export function getFreightOffers() {
-  return get(API_ROUTES.FREIGHT_OFFERS);
+export function getFreightOffers(filters = {}) {
+  const query = new URLSearchParams(
+    Object.entries(filters).filter(([, value]) => value),
+  ).toString();
+
+  const endpoint = query ? `${API_ROUTES.FREIGHT_OFFERS}?${query}` : API_ROUTES.FREIGHT_OFFERS;
+  return get(endpoint);
 }
 
 export function createFreightOffer(data) {

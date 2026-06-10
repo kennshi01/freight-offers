@@ -13,7 +13,8 @@ const emptyOffer = {
   miles: "",
   weight: "",
   equipmentType: EQUIPMENT_TYPES[0],
-  priority: PRIORITIES[0],
+  priority: PRIORITIES[1],
+  dispatcherNotes: "",
 };
 
 function FreightOfferForm({ brokers, editingOffer, onAddOffer, onUpdateOffer, onCancelEdit }) {
@@ -110,6 +111,16 @@ function FreightOfferForm({ brokers, editingOffer, onAddOffer, onUpdateOffer, on
           <select name="priority" value={formData.priority} onChange={handleChange}>
             {PRIORITIES.map((priority) => <option key={priority}>{priority}</option>)}
           </select>
+        </label>
+        <label className="form-field-wide">
+          Dispatcher notes
+          <textarea
+            name="dispatcherNotes"
+            value={formData.dispatcherNotes}
+            onChange={handleChange}
+            rows="3"
+            placeholder="Optional notes for the dispatch team"
+          />
         </label>
       </div>
       <div className="form-actions">

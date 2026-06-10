@@ -24,7 +24,7 @@ export const initialFreightOffers = [
     miles: 665,
     weight: 36500,
     equipmentType: "Reefer",
-    priority: "Normal",
+    priority: "Medium",
     status: "Reviewed",
   },
   {
@@ -38,7 +38,7 @@ export const initialFreightOffers = [
     miles: 535,
     weight: 39000,
     equipmentType: "Flatbed",
-    priority: "Normal",
+    priority: "Medium",
     status: "Accepted",
   },
   {
@@ -52,7 +52,7 @@ export const initialFreightOffers = [
     miles: 865,
     weight: 28000,
     equipmentType: "Step Deck",
-    priority: "Normal",
+    priority: "Low",
     status: "Rejected",
   },
   {
@@ -66,7 +66,7 @@ export const initialFreightOffers = [
     miles: 175,
     weight: 33500,
     equipmentType: "Dry Van",
-    priority: "Normal",
+    priority: "Medium",
     status: "Accepted",
   },
   {

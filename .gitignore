@@ -1,8 +1,12 @@
 node_modules/
 dist/
+build/
+.vite-cache/
 .npm-cache/
 .env
 .env.local
 bin/
 obj/
 .vs/
+*.db
+.dotnet/

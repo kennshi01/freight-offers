@@ -4,6 +4,7 @@ import FreightOfferForm from "../components/FreightOfferForm";
 import FreightOfferTable from "../components/FreightOfferTable";
 import { EQUIPMENT_TYPES } from "../constants/equipmentTypes";
 import { OFFER_STATUSES } from "../constants/offerStatus";
+import { PRIORITIES } from "../constants/priorities";
 
 function FreightOffers({ offers, brokers, onAddOffer, onUpdateOffer, onUpdateStatus, onDeleteOffer }) {
   const [editingOffer, setEditingOffer] = useState(null);
@@ -12,6 +13,7 @@ function FreightOffers({ offers, brokers, onAddOffer, onUpdateOffer, onUpdateSta
     deliveryCity: "",
     status: "",
     equipmentType: "",
+    priority: "",
   });
 
   function handleFilterChange(event) {
@@ -24,7 +26,8 @@ function FreightOffers({ offers, brokers, onAddOffer, onUpdateOffer, onUpdateSta
       offer.pickupCity.toLowerCase().includes(filters.pickupCity.toLowerCase()) &&
       offer.deliveryCity.toLowerCase().includes(filters.deliveryCity.toLowerCase()) &&
       (!filters.status || offer.status === filters.status) &&
-      (!filters.equipmentType || offer.equipmentType === filters.equipmentType)
+      (!filters.equipmentType || offer.equipmentType === filters.equipmentType) &&
+      (!filters.priority || offer.priority === filters.priority)
     );
   });
 
@@ -78,6 +81,10 @@ function FreightOffers({ offers, brokers, onAddOffer, onUpdateOffer, onUpdateSta
           <select name="equipmentType" value={filters.equipmentType} onChange={handleFilterChange}>
             <option value="">All equipment</option>
             {EQUIPMENT_TYPES.map((type) => <option key={type}>{type}</option>)}
+          </select>
+          <select name="priority" value={filters.priority} onChange={handleFilterChange}>
+            <option value="">All priorities</option>
+            {PRIORITIES.map((priority) => <option key={priority}>{priority}</option>)}
           </select>
         </div>
         <FreightOfferTable
